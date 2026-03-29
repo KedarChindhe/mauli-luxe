@@ -13,9 +13,19 @@ const AdminDashboard = () => {
 
   const inputClass = "w-full bg-card border border-border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring";
 
+  const ADMIN_EMAIL = "admin@maulifootwear.com";
+  const ADMIN_PASSWORD = "mauli@2024";
+
+  const [loginError, setLoginError] = useState("");
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && password) setLoggedIn(true);
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      setLoggedIn(true);
+      setLoginError("");
+    } else {
+      setLoginError("Invalid email or password");
+    }
   };
 
   if (!loggedIn) {
@@ -32,6 +42,7 @@ const AdminDashboard = () => {
           <form onSubmit={handleLogin} className="space-y-4">
             <input type="email" value={email} onChange={e => setEmail(e.target.value)} className={inputClass} placeholder="admin@maulifootwear.com" required />
             <input type="password" value={password} onChange={e => setPassword(e.target.value)} className={inputClass} placeholder="Password" required />
+            {loginError && <p className="text-destructive text-xs text-center">{loginError}</p>}
             <Button type="submit" className="w-full rounded-full font-body font-semibold">Sign In</Button>
           </form>
         </motion.div>
