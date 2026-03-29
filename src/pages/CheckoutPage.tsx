@@ -16,6 +16,28 @@ const CheckoutPage = () => {
       toast.error("Please fill all required fields");
       return;
     }
+
+    // Save order to localStorage for admin dashboard
+    const order = {
+      id: `ord-${Date.now()}`,
+      customerName: `${form.firstName} ${form.lastName}`.trim(),
+      email: form.email,
+      phone: form.phone,
+      address: `${form.address}, ${form.city}, ${form.state} ${form.pincode}`.trim(),
+      items: items.map(i => ({
+        productName: i.product.name,
+        size: i.size,
+        quantity: i.quantity,
+        price: i.product.price,
+        customization: i.customization,
+      })),
+      total: cartTotal,
+      status: "pending" as const,
+      date: new Date().toISOString().split("T")[0],
+    };
+    const existingOrders = JSON.parse(localStorage.getItem("mauli-orders") || "[]");
+    localStorage.setItem("mauli-orders", JSON.stringify([order, ...existingOrders]));
+
     toast.success("Order placed successfully! We'll contact you shortly.");
     clearCart();
   };
