@@ -42,6 +42,7 @@ const AdminDashboard = () => {
           <form onSubmit={handleLogin} className="space-y-4">
             <input type="email" value={email} onChange={e => setEmail(e.target.value)} className={inputClass} placeholder="admin@maulifootwear.com" required />
             <input type="password" value={password} onChange={e => setPassword(e.target.value)} className={inputClass} placeholder="Password" required />
+            {loginError && <p className="text-destructive text-xs text-center">{loginError}</p>}
             <Button type="submit" className="w-full rounded-full font-body font-semibold">Sign In</Button>
           </form>
         </motion.div>
