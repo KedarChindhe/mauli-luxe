@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Pencil, Trash2, Package, ShoppingCart, LogIn, X, Eye } from "lucide-react";
 import ImageUploader from "@/components/ImageUploader";
 import { Button } from "@/components/ui/button";
-import { products as initialProducts, Product } from "@/data/products";
+import { Product } from "@/data/products";
+import { getProducts, saveProducts as persistProducts } from "@/lib/productStore";
 import { toast } from "sonner";
 
 interface Order {
@@ -33,10 +34,7 @@ const AdminDashboard = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [tab, setTab] = useState<"products" | "orders">("products");
-  const [productList, setProductList] = useState<Product[]>(() => {
-    const saved = localStorage.getItem("mauli-admin-products");
-    return saved ? JSON.parse(saved) : initialProducts;
-  });
+  const [productList, setProductList] = useState<Product[]>(getProducts);
   const [orders, setOrders] = useState<Order[]>(() => {
     const saved = localStorage.getItem("mauli-orders");
     return saved ? JSON.parse(saved) : sampleOrders;
@@ -58,9 +56,9 @@ const AdminDashboard = () => {
 
   const inputClass = "w-full bg-background border border-border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring";
 
-  const saveProducts = (list: Product[]) => {
+  const saveProductList = (list: Product[]) => {
     setProductList(list);
-    localStorage.setItem("mauli-admin-products", JSON.stringify(list));
+    persistProducts(list);
   };
 
   const saveOrders = (list: Order[]) => {
@@ -124,14 +122,14 @@ const AdminDashboard = () => {
 
     if (editingProduct) {
       const updated = productList.map(p => p.id === editingProduct.id ? { ...productData, id: editingProduct.id } : p);
-      saveProducts(updated);
+      saveProductList(updated);
       toast.success("Product updated successfully");
     } else {
       const newProduct: Product = {
         ...productData,
         id: `p${Date.now()}`,
       };
-      saveProducts([...productList, newProduct]);
+      saveProductList([...productList, newProduct]);
       toast.success("Product added successfully");
     }
     setShowModal(false);
@@ -139,7 +137,7 @@ const AdminDashboard = () => {
 
   const handleDeleteProduct = (id: string) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
-      saveProducts(productList.filter(p => p.id !== id));
+      saveProductList(productList.filter(p => p.id !== id));
       toast.success("Product deleted");
     }
   };

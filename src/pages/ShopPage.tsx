@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import ProductCard from "@/components/ProductCard";
-import { products } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 
 const ShopPage = () => {
   const [searchParams] = useSearchParams();
@@ -10,6 +10,7 @@ const ShopPage = () => {
   const [category, setCategory] = useState(initialCat);
   const [priceRange, setPriceRange] = useState("all");
   const [size, setSize] = useState("all");
+  const products = useProducts();
 
   const filtered = useMemo(() => {
     return products.filter(p => {

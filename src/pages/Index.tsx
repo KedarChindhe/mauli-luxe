@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/ProductCard";
-import { products } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 
 const categories = [
   { name: "Chappal", slug: "chappal", image: "https://images.unsplash.com/photo-1603487742131-4160ec999306?w=400&h=500&fit=crop" },
@@ -18,6 +18,7 @@ const testimonials = [
 ];
 
 const HomePage = () => {
+  const products = useProducts();
   const featured = products.filter(p => p.featured);
 
   return (
