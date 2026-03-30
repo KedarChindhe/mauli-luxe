@@ -3,9 +3,9 @@ import { Upload, X, Image as ImageIcon, Loader2, AlertCircle } from "lucide-reac
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 
-const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_WIDTH = 1000;
+const MAX_WIDTH = 1200;
 const QUALITY = 0.85;
 
 interface ImageUploaderProps {
@@ -47,7 +47,7 @@ const ImageUploader = ({ images, onChange }: ImageUploaderProps) => {
 
   const validateFile = (file: File): string | null => {
     if (!ALLOWED_TYPES.includes(file.type)) return `"${file.name}" — only JPG, PNG, WEBP allowed`;
-    if (file.size > MAX_FILE_SIZE) return `"${file.name}" — exceeds 2MB limit (${(file.size / 1024 / 1024).toFixed(1)}MB)`;
+    if (file.size > MAX_FILE_SIZE) return `"${file.name}" — File too large (max 5MB). Current: ${(file.size / 1024 / 1024).toFixed(1)}MB`;
     return null;
   };
 
@@ -124,7 +124,7 @@ const ImageUploader = ({ images, onChange }: ImageUploaderProps) => {
             <p className="text-sm font-medium">
               {dragging ? "Drop images here" : "Drag & drop or click to upload"}
             </p>
-            <p className="text-xs text-muted-foreground">JPG, PNG, WEBP • Max 2MB each</p>
+            <p className="text-xs text-muted-foreground">JPG, PNG, WEBP • Max 5MB each</p>
           </div>
         )}
       </div>
@@ -132,7 +132,7 @@ const ImageUploader = ({ images, onChange }: ImageUploaderProps) => {
       {/* Info note */}
       <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 rounded-lg p-2.5">
         <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-        <span>Images auto-compressed to WebP, max 1000px width for fast loading.</span>
+        <span>Images auto-compressed to WebP, max 1200px width for fast loading.</span>
       </div>
 
       {/* Previews */}

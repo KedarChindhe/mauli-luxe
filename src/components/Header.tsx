@@ -23,7 +23,7 @@ const Header = () => {
           <img
             src={mauliLogo}
             alt="Mauli Footwear"
-            className="h-10 md:h-12 w-auto object-contain"
+            className="h-10 md:h-12 w-auto object-contain drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = 'none';
               (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
