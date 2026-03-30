@@ -122,14 +122,14 @@ const AdminDashboard = () => {
 
     if (editingProduct) {
       const updated = productList.map(p => p.id === editingProduct.id ? { ...productData, id: editingProduct.id } : p);
-      saveProducts(updated);
+      saveProductList(updated);
       toast.success("Product updated successfully");
     } else {
       const newProduct: Product = {
         ...productData,
         id: `p${Date.now()}`,
       };
-      saveProducts([...productList, newProduct]);
+      saveProductList([...productList, newProduct]);
       toast.success("Product added successfully");
     }
     setShowModal(false);
@@ -137,7 +137,7 @@ const AdminDashboard = () => {
 
   const handleDeleteProduct = (id: string) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
-      saveProducts(productList.filter(p => p.id !== id));
+      saveProductList(productList.filter(p => p.id !== id));
       toast.success("Product deleted");
     }
   };
