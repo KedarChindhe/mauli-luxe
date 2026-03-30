@@ -3,6 +3,7 @@ import { ShoppingBag, Heart, Menu, X, User } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import mauliLogo from "@/assets/mauli-logo.png";
 
 const Header = () => {
   const { cartCount, favorites } = useCart();
@@ -18,8 +19,17 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-dark/95 backdrop-blur-md border-b border-dark-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="font-display text-xl font-bold text-gradient-gold tracking-wide">
-          MAULI
+        <Link to="/" className="flex items-center gap-2 shrink-0">
+          <img
+            src={mauliLogo}
+            alt="Mauli Footwear"
+            className="h-10 md:h-12 w-auto object-contain"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none';
+              (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+            }}
+          />
+          <span className="hidden font-display text-xl font-bold text-gradient-gold tracking-wide">MAULI</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
