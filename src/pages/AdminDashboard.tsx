@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Pencil, Trash2, Package, ShoppingCart, LogIn, X, Eye, Image } from "lucide-react";
+import { Plus, Pencil, Trash2, Package, ShoppingCart, LogIn, X, Eye } from "lucide-react";
+import ImageUploader from "@/components/ImageUploader";
 import { Button } from "@/components/ui/button";
 import { products as initialProducts, Product } from "@/data/products";
 import { toast } from "sonner";
@@ -46,7 +47,7 @@ const AdminDashboard = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState<Omit<Product, "id">>(emptyProduct);
   const [sizeInput, setSizeInput] = useState("");
-  const [imageInput, setImageInput] = useState("");
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   // Order detail modal
   const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
@@ -81,7 +82,7 @@ const AdminDashboard = () => {
     setEditingProduct(null);
     setFormData(emptyProduct);
     setSizeInput("");
-    setImageInput("");
+    setUploadedImages([]);
     setShowModal(true);
   };
 
@@ -97,7 +98,7 @@ const AdminDashboard = () => {
       featured: product.featured,
     });
     setSizeInput(product.sizes.join(", "));
-    setImageInput(product.images.join("\n"));
+    setUploadedImages(product.images);
     setShowModal(true);
   };
 
@@ -108,7 +109,7 @@ const AdminDashboard = () => {
     }
 
     const sizes = sizeInput.split(",").map(s => parseInt(s.trim())).filter(n => !isNaN(n));
-    const images = imageInput.split("\n").map(s => s.trim()).filter(Boolean);
+    const images = uploadedImages;
 
     if (sizes.length === 0) {
       toast.error("Add at least one size");
@@ -382,11 +383,7 @@ const AdminDashboard = () => {
                   <input value={sizeInput} onChange={e => setSizeInput(e.target.value)} className={inputClass} placeholder="6, 7, 8, 9, 10" />
                 </div>
 
-                <div>
-                  <label className="text-sm font-medium mb-1 block flex items-center gap-1"><Image className="w-3 h-3" /> Image URLs (one per line)</label>
-                  <textarea value={imageInput} onChange={e => setImageInput(e.target.value)} className={`${inputClass} min-h-[80px] resize-none`}
-                    placeholder="https://images.unsplash.com/photo-..." />
-                </div>
+                <ImageUploader images={uploadedImages} onChange={setUploadedImages} />
 
                 <div>
                   <label className="text-sm font-medium mb-1 block">Description</label>
